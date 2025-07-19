@@ -5,16 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สุ่มไพ่ทาโรต์เมเจอร์</title>
 <style>
-/*     @media (max-width:640px) */
     body {
-        margin: 0;
-        padding: 20px;
-        font-family: 'Segoe UI', sans-serif;
-        background: radial-gradient(ellipse at center, #1c1c2b 0%, #0c0c12 100%);
-        color: #f0eaff;
-        min-height: 100vh;
-        max-width:640px
-    }
+    margin: 0;
+    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(ellipse at center, #1c1c2b 0%, #0c0c12 100%);
+    color: #f0eaff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* ไม่ให้ลอยกลางบนจอมือถือ */
+    text-align: center;
+}
 
     h1 {
         text-align: center;
@@ -116,7 +119,12 @@ option {
     background: #333;
     color: #fff;
 }
-
+.control-panel {
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+}
 
 
 </style>
