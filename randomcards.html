@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สุ่มไพ่ทาโรต์เมเจอร์</title>
+<style>
+    body {
+        margin: 0;
+        padding: 20px;
+        font-family: 'Segoe UI', sans-serif;
+        background: radial-gradient(ellipse at center, #1c1c2b 0%, #0c0c12 100%);
+        color: #f0eaff;
+        min-height: 100vh;
+    }
+
+    h1 {
+        text-align: center;
+        color: #e0d4f7;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    }
+
+    select, button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        margin: 10px;
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(8px);
+        transition: transform 0.2s, background 0.2s;
+    }
+
+    select:focus, button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
+    }
+
+    .card-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 30px;
+    }
+
+    .card, label {
+        background: linear-gradient(145deg, rgba(64, 38, 103, 0.8), rgba(27, 18, 43, 0.9));
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(128, 0, 255, 0.4);
+        margin: 15px;
+        padding: 15px;
+        width: 220px;
+        color: #fff;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 0 25px rgba(128, 0, 255, 0.6);
+    }
+
+    .card img {
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+
+    .card h3 {
+        margin: 12px 0 8px;
+        font-size: 20px;
+        color: #ffcaff;
+        text-shadow: 0 0 5px rgba(255, 150, 255, 0.5);
+    }
+
+    .card p {
+        text-align: left;
+        font-size: 14px;
+        line-height: 1.4;
+        color: #d8c9f0;
+    }
+
+    body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.control-panel {
+    text-align: center;
+}
+
+.control-panel select,
+.control-panel button {
+    margin: 5px;
+}
+
+select {
+    background: #333;  
+    color: #fff;       
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+option {
+    background: #333;
+    color: #fff;
+}
+
+
+
+</style>
+
+</head>
+<body>
+
+    <h1>Pick a cards By Life be like?</h1>
+    <h4>เป็นการสุ่มไพ่ไปเรื่อยๆ เพื่อความบันเทิงเท่านั้น</h4>
+
+<div class="control-panel">
+    <label for="cardCount">จำนวนไพ่ที่ต้องการสุ่ม:</label>
+    <select id="cardCount">
+        <option value="1">1 ใบ</option>
+        <option value="3">3 ใบ</option>
+        <option value="5">5 ใบ</option>
+    </select>
+    <button onclick="drawCards()">สุ่มไพ่</button>
+</div>
+
+
+    <div id="cardContainer" class="card-container"></div>
+
+    <script>
+        const tarotCards = [
+            { name: "The Fool", file: "C0.jpg", meanings: { ความหมาย : "เป็นคนที่ไม่เหมือนใครในสังคม ไม่ชอบ กฎเกณฑ์ใดๆมีอิสระสูงไม่ยึดติดในทุกๆเรื่อง หมายถึงมีโอกาสใหม่ๆ และหมายถึงการกระโดดในสิ่งที่ไม่รู้โดยไม่กังวลใจแต่อย่างใด" } },
+            { name: "The Magician", file: "C1.jpg", meanings: { ความหมาย : "เป็นคนที่หัวไวเรียนรู้อะไรได้รวดเร็วและรักอิสระเหมือนThe Fool มักทำอะไรตามอารมณ์ หมายถึงการเริ่มต้นใหม่สามารถทำสิ่งที่หวังให้สำเร็จลงได้ค่ะ และมักสนใจเรื่องของภาษาด้วย"} },
+            { name: "The High Priestress", file: "C3.jpg", meanings: { ความหมาย : "เมื่อได้ไพ่ตัวนี้ปรากฏขึ้นมักเป็นช่วงเวลาที่คุณอึดอัดใจอยากทราบคำตอบที่แท้จริง ต้องอดทนเปิดใจให้กว้าง ก่อนจะพบทางที่เหมาะสมและคนที่ใช่"} },
+            { name: "The Empress", file: "C4.jpg", meanings: { ความหมาย : "เมื่อหน้าไพ่เป็นตัวแทนของความรัก ความสวยงาม มีทรัพย์สิน การเกิดของทารก การแต่งงาน กิจกรรมดำเนินไปอย่างราบรื่น"} },
+            { name: "The Emperor", file: "C5.jpg", meanings: { ความหมาย : "คนที่มีลักษณะเป็นผู้นำ คนที่เดินไปข้างหน้า ไม่ถอยหลัง ทำกิจการงานได้ได้โดยไม่รู้จักเหน็ดเหนื่อย วางแผนทำกิจการงานใดก็จะต้องลุยให้สำเร็จไปจนได้"} },
+            { name: "The Hierophant", file: "C6.jpg", meanings: { ความหมาย : "จัดโครงสร้างหรือจัดระเบียบใหม่ให้กับชีวิตของตนเอง การมีใจไฝ่เรียนรู้ให้สูงขึ้นไปอีก รวมทั้งมีความสนใจในศาสนาและพิธีกรรมอีกด้วย"} },
+            { name: "The Lover", file: "C7.jpg", meanings: { ความหมาย : "ช่วงเวลาที่อยากมีความรัก หรือมีคนเข้ามารักและหมายถึง การเลือก จุดเด่นของไพ่อีกอย่างคือจะมีการเปลี่ยนแปลงเกิดขึ้นอย่างไม่คาดคิดมาก่อน หรือการโยกย้ายถิ่นฐานหรือไปต่างประเทศก็ได้"} },
+            { name: "The The Chariot", file: "C8.jpg", meanings: { ความหมาย : "เป็นสัญลักษณ์ของการเคลื่อนไหว การท้าทาย และการเอาชนะ แต่ต้องใช้ความพยายามอย่างหนักในการฟันฝ่าอุปสรรคหากคุณมีจิตใจดีมองโลกในแง่ดี ก็สามารถฝ่าฟันอุปสรรคให้ผ่านพ้นไปได้"} },
+            { name: "The Strength", file: "C9.jpg", meanings: { ความหมาย : "ภาพบนไพ่ซึ่งเป็นรูปผู้หญิงกดปากสิงโต แสดงให้เห็นถึงการควบคุมจิตใจ ไม่ยอมแพ้ต่อสิ่งเลวร้ายต่างๆ ที่เข้ามา"} },
+            { name: "The Hermit", file: "C10.jpg", meanings: { ความหมาย : "เป็นช่วงระยะเวลาที่จะใคร่ครวญ และทบทวนสิ่งต่างๆให้ละเอียดถ่องแท้ การค้นหาความหมายของชีวิต"} },
+            { name: "Wheel of Fortune", file: "C11.jpg", meanings: { ความหมาย : "ชีวิตกำลังอยู่ในจุดที่จะมีการเปลี่ยนแปลง ในด้านดี คือ มีโชคลาภให้เก็บเกี่ยว กงล้อนี้จะหมุนไปเรื่อยๆอย่าคาดหวังว่าสิ่งที่ดีจะอยู่ตลอดไป หากปรากฏในพื้นดวง หมายถึง มีมรดกทรัพย์สมบัติ หรือมีโชคจากการซื้อที่ดิน"} },
+            { name: "Justice", file: "C12.jpg", meanings: { ความหมาย : "การตัดสินใจโดยใช้เหตุและผล หากมีเรื่องต้องฟ้องร้องทางกฎหมายจะได้ชัยชนะ"} },
+            { name: "The Hanged Man", file: "C13.jpg", meanings: { ความหมาย : "โดยส่วนใหญ่ความหมายหน้าไพ่นี้คือการสูญเสีย ไม่ว่าจะเป็นในแง่ของเงิน งาน หรือความรัก แต่สิ่งที่จะตามาหลักจากนั้น คือจะทำให้เข้าใจชีวิตมากขึ้น"} },
+            { name: "Death", file: "C14.jpg", meanings: { ความหมาย : "หมายถึงมีการเปลี่ยนแปลงเกิดขึ้น หลังจากสถานการณ์เลวร้ายสิ้นสุดลงไป ในช่วงนี้อาจเกิดความคิดใหม่ๆ มีความรู้สึกเหมือนตายแล้วเกิดใหม่ ควรระวังอย่างมากในการอ่านว่าใครจะเสียชีวิต"} },
+            { name: "Temperance", file: "C15.jpg", meanings: { ความหมาย : "เป็นสัญลักษณ์ของการโยกย้าย เปลี่ยนแปลง อดทน ควบคุมตนเอง และแสดงถึงมิตรภาพ การปรองดอง"} },
+            { name: "The Devil", file: "C16.jpg", meanings: { ความหมาย : "ความหมายของหน้าไพ่นี้คือ ตกอยู่ในอำนาจของความมัวเมาด้วยความโลภโมโทสัน ความทะยานอยากมีอยากได้ enjoyในเรื่องทางเพศ อย่างไม่รู้สึกอับอาย"} },
+            { name: "The Tower", file: "C17.jpg", meanings: { ความหมาย : "จะเกิดการเปลี่ยนแปลงครั้งใหญ่ ส่วนมากจะเป็นไปในทางที่ไม่ค่อยจะดีนัก อาจมีเหตุการณ์ทำให้คุณเสียความรู้สึก หรือสิ้นศรัทธาในบางคนได้"} },
+            { name: "The Star", file: "C18.jpg", meanings: { ความหมาย : "เป็นหน้าไพ่แห่งความหวัง และความไว้วางใจ หากเจ้าชะตาประสบปัญหาความยุ่งยาก จะสามารถแก้ไข ความทุกข์ออกไปจากความทรงจำ"} },
+            { name: "The Moon", file: "C19.jpg", meanings: { ความหมาย : "ระวังเรื่องของการหลอกลวง การหักหลัง ถ้าได้ไพ่ใบนี้ คุณมักจะตกอยู่ในภาวะวิตกกังวลเครียด ไพ่ใบนี้มักจะดีกับคนที่ทำงานเป็นศิลปิน เช่น งานโฆษณา นักดนตรี นักแต่งเพลง นอกจากนี้ยังบอกถึง คนที่ชอบด้านไสยศาสตร์ ศาสตร์ที่ไม่สามารถอธิบายได้ด้วยวิทยาศาสตร์"} },
+            { name: "The Sun", file: "C20.jpg", meanings: { ความหมาย : "เมื่อไพ่ใบนี้ปรากฎในสถานการณ์ปัจจุบันเรียกว่าสิ่งต่างๆ ในชีวิตจะดีขึ้นในทุกด้านและมักจะทำให้คนรอบข้างมีชีวิตชีวาตามไปด้วย หมายถึงข่าวดีทุกแบบ การเกิดของเด็กคนหนึ่ง"} },
+            { name: "Judgement", file: "C21.jpg", meanings: { ความหมาย : "หมายถึง การเกิดใหม่ จะมีการพัฒนาในการดำเนินการต่างๆ นอกจากนี้ยังหมายถึง การตัดสินใจก็ได้ แสดงว่า กำลังตัดสินใจเลือกทำสิ่งใดสิ่งหนึ่ง"} },
+        ];
+
+        function drawCards() {
+            const count = parseInt(document.getElementById("cardCount").value);
+            const shuffled = [...tarotCards].sort(() => Math.random() - 0.5);
+            const selectedCards = shuffled.slice(0, count);
+
+            const container = document.getElementById("cardContainer");
+            container.innerHTML = "";
+
+            selectedCards.forEach(card => {
+                const div = document.createElement("div");
+                div.className = "card";
+
+                div.innerHTML = `
+                    <img src="card/${card.file}" alt="${card.name}">
+                    <h3>${card.name}</h3>
+                    <p>
+                        <strong>ความหมายไพ่ :</strong> ${card.meanings.ความหมาย}<br>
+                    </p>
+                `;
+                container.appendChild(div);
+            });
+        }
+    </script>
+
+</body>
+</html>
